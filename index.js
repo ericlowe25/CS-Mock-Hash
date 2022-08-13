@@ -1,5 +1,6 @@
 // This allows us to use the bcrypt algorithm in our Node.js project
 const bcrypt = require('bcrypt')
+// const { now } = require('core-js/core/date')
 
 // This allows us to read from the terminal
 const readlineSync = require('readline-sync')
@@ -15,19 +16,16 @@ let globalStore = {}
 
 // function for checking a password
 checkPassword = async (username, plaintextPassword) => {
-    // TODO: Make sure to delete this console.log once you're done implementing the function!
-    console.log('\n Uh-oh, checkPassword is not yet implemented. 😢')
-    // Ensure global store contains the user 
-    // (this is a quick way to check if an object contains a key)
     if (globalStore[username]) {
-        // TODO: Use bcrypt's compare methof to compare a plaintext password to a password hash
-
+        let result = await bcrypt.compare(plaintextPassword, globalStore[username])
+        
         // TODO: The result variable is a boolean. True means the user was valid. Take action accordingly.
         if (result) {
-            // TODO: Display message for valid credentials
+            console.log(`Welcome back, ${username}, you're logged in now.`)
         }
         else {
             // TODO: Display message for invalid credentials
+            console.log("Invalid username!")
         }
     }
     else {
@@ -37,14 +35,12 @@ checkPassword = async (username, plaintextPassword) => {
 }
 
 hashPassword = async (username, password) => {
-    // TODO: Make sure to delete this console.log once you're done implementing the function!
-    console.log('\nUh-oh, hashPassword is not yet implemented. 😢')
-
     // TODO: Make the password hash using bcrypt
-
+    let hashedPassword = await bcrypt.hash(password, 12)
     // TODO: Add the user and password hash to the global store object
-
+    globalStore[username] = hashedPassword
     // TODO: Print a status update including the username and password hash
+    console.log(`User ${username} was added. Their hash password is ${hashedPassword}`)
 }
 
 
